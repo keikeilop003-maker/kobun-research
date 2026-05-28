@@ -595,7 +595,7 @@
 
 <div class="progress-bar-wrap">
   <div class="progress-meta">
-    <span id="prog-text">0 / 24 問回答済み</span>
+    <span id="prog-text">0 / 25 問回答済み</span>
     <span id="prog-pct">0%</span>
   </div>
   <div class="progress-track">
@@ -615,6 +615,16 @@
           <span class="section-title">テスト結果と全体の振り返り</span>
         </div>
         <div class="section-body">
+
+          <div class="question" id="q0">
+            <div class="q-label">
+              <span class="q-num">０</span>
+              <span class="q-text">生徒番号を入力してください。<span class="required-tag">必須</span></span>
+            </div>
+            <p class="q-hint">英数字4ケタ（千の位：1、百の位：FまたはG、十の位・一の位：数字）例：1F05 / 1G23</p>
+            <input type="text" name="student_id" placeholder="例：1F05" maxlength="4">
+            <div class="error-msg" id="e0"><span>⚠</span> 正しい形式で入力してください（1F〜または1G〜の4ケタ）。</div>
+          </div>
 
           <div class="question" id="q1">
             <div class="q-label">
@@ -1047,7 +1057,7 @@ function countAnswered() {
 }
 
 function updateProgress() {
-  const total = 24;
+  const total = 25;
   const answered = countAnswered();
   const pct = Math.round((answered / total) * 100);
   progFill.style.width = pct + '%';
@@ -1134,6 +1144,19 @@ function restoreFromStorage() {
 function validate() {
   let valid = true;
 
+  // ０ 生徒番号 必須
+  const q0el = document.getElementById('q0');
+  const q0input = q0el.querySelector('input');
+  const q0err = document.getElementById('e0');
+  if (!/^1[FG]\d{2}$/.test(q0input.value.trim())) {
+    q0el.classList.add('has-error');
+    q0err.classList.add('show');
+    valid = false;
+  } else {
+    q0el.classList.remove('has-error');
+    q0err.classList.remove('show');
+  }
+
   // ① 点数 必須
   const q1el = document.getElementById('q1');
   const q1input = q1el.querySelector('input');
@@ -1172,7 +1195,8 @@ function collectData() {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!validate()) {
-    document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const firstErr = document.querySelector('.has-error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
 
@@ -1322,6 +1346,14 @@ function savePDF() {
 
 // ── イベントバインド ──────────────────────────────────────
 function bindEvents() {
+  // 生徒番号 自動大文字化
+  const sidInput = form.querySelector('[name="student_id"]');
+  sidInput.addEventListener('input', function() {
+    const pos = this.selectionStart;
+    this.value = this.value.toUpperCase();
+    this.setSelectionRange(pos, pos);
+  });
+
   form.querySelectorAll('input, textarea').forEach(el => {
     el.addEventListener('change', () => {
       refreshOptStyles();
