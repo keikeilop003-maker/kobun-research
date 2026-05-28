@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>古典 中間テスト振り返りアンケート</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #eef2ff;
+      --primary-dark: #3730a3;
+      --s1: #4f46e5;
+      --s2: #0891b2;
+      --s3: #059669;
+      --s4: #d97706;
+      --s5: #dc2626;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic Medium', 'Meiryo', sans-serif;
+      background: #f0f2f8;
+      color: var(--gray-900);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #312e81 0%, #4f46e5 50%, #7c3aed 100%);
+      color: white;
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 5px 18px;
+      font-size: 13px;
+      margin-bottom: 18px;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    .header h1 {
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .header-desc {
+      max-width: 580px;
+      margin: 0 auto;
+      font-size: 14px;
+      opacity: 0.88;
+      line-height: 1.9;
+      background: rgba(255,255,255,0.1);
+      padding: 14px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ── Progress ── */
+    .progress-bar-wrap {
+      background: white;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-bottom: 5px;
+    }
+
+    .progress-track {
+      height: 5px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #7c3aed);
+      border-radius: 3px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 28px 16px 60px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 28px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 22px;
+      color: white;
+    }
+
+    .section-1 .section-header { background: var(--s1); }
+    .section-2 .section-header { background: var(--s2); }
+    .section-3 .section-header { background: var(--s3); }
+    .section-4 .section-header { background: var(--s4); }
+    .section-5 .section-header { background: var(--s5); }
+
+    .section-badge {
+      background: rgba(255,255,255,0.22);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .section-body {
+      background: white;
+    }
+
+    /* ── Question ── */
+    .question {
+      padding: 22px 24px;
+      border-bottom: 1px solid #f1f3f7;
+      transition: background 0.15s;
+    }
+
+    .question:last-child {
+      border-bottom: none;
+    }
+
+    .question:hover {
+      background: #fdfeff;
+    }
+
+    .q-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .q-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .section-2 .q-num { background: #e0f2fe; color: #0369a1; }
+    .section-3 .q-num { background: #dcfce7; color: #15803d; }
+    .section-4 .q-num { background: #fef3c7; color: #92400e; }
+    .section-5 .q-num { background: #fee2e2; color: #b91c1c; }
+
+    .q-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.6;
+    }
+
+    .required-tag {
+      display: inline-block;
+      font-size: 10px;
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 8px;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+
+    .q-hint {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-bottom: 12px;
+      margin-left: 38px;
+    }
+
+    /* ── Inputs ── */
+    input[type="text"],
+    textarea {
+      width: 100%;
+      border: 1.5px solid var(--gray-300);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--gray-900);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      resize: vertical;
+      background: #fdfdff;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+      background: white;
+    }
+
+    textarea { min-height: 110px; line-height: 1.7; }
+
+    /* ── Options ── */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 15px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .opt:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateX(2px);
+    }
+
+    .opt input[type="radio"],
+    .opt input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .opt.checked {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .section-2 .opt.checked { border-color: #0891b2; background: #e0f2fe; }
+    .section-3 .opt.checked { border-color: #059669; background: #dcfce7; }
+    .section-4 .opt.checked { border-color: #d97706; background: #fef3c7; }
+    .section-5 .opt.checked { border-color: #dc2626; background: #fee2e2; }
+
+    .opt-text {
+      font-size: 14px;
+      color: var(--gray-700);
+    }
+
+    /* other text input */
+    .other-input-wrap {
+      margin-top: 8px;
+      display: none;
+    }
+
+    .other-input-wrap.visible {
+      display: block;
+    }
+
+    .other-input-wrap input {
+      border-radius: 8px;
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+
+    /* ── Error ── */
+    .error-msg {
+      font-size: 12px;
+      color: #dc2626;
+      margin-top: 7px;
+      display: none;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .error-msg.show { display: flex; }
+
+    .has-error input[type="text"],
+    .has-error textarea {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    }
+
+    /* ── Submit ── */
+    .submit-area {
+      margin-top: 36px;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 16px 72px;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      box-shadow: 0 5px 20px rgba(79,70,229,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79,70,229,0.45);
+    }
+
+    .submit-btn:active { transform: translateY(0); }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-note {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 12px;
+    }
+
+    /* ── Thank you ── */
+    .thankyou {
+      display: none;
+      text-align: center;
+      padding: 80px 24px 40px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .thankyou.show { display: block; }
+
+    .ty-icon {
+      width: 88px;
+      height: 88px;
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 40px;
+      box-shadow: 0 8px 24px rgba(5,150,105,0.2);
+    }
+
+    .thankyou h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--gray-900);
+    }
+
+    .thankyou p {
+      color: var(--gray-500);
+      line-height: 1.8;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .form-wrap.hidden { display: none; }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .header { padding: 36px 16px 32px; }
+      .question { padding: 18px 16px; }
+      .opt { padding: 10px 12px; }
+      .submit-btn { padding: 14px 48px; font-size: 15px; }
+      .section-header { padding: 16px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">古典　中間テスト</div>
+    <h1>テスト振り返りアンケート</h1>
+    <p class="header-desc">
+      今回の中間テストについて振り返りを行います。<br>
+      自分自身の学習を見直し、次回の学習につなげることが目的です。<br>
+      授業改善の参考にもしますので、できるだけ具体的に回答してください。
+    </p>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-meta">
+    <span id="prog-text">0 / 24 問回答済み</span>
+    <span id="prog-pct">0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="prog-fill"></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="form-wrap" id="form-wrap">
+    <form id="survey" novalidate>
+
+      <!-- ════ セクション１ ════ -->
+      <div class="section section-1">
+        <div class="section-header">
+          <span class="section-badge">セクション 1</span>
+          <span class="section-title">テスト結果と全体の振り返り</span>
+        </div>
+        <div class="section-body">
+
+          <div class="question" id="q1">
+            <div class="q-label">
+              <span class="q-num">①</span>
+              <span class="q-text">今回のテストの点数を入力してください。<span class="required-tag">必須</span></span>
+            </div>
+            <input type="text" name="q1" placeholder="例：75" maxlength="10">
+            <div class="error-msg" id="e1"><span>⚠</span> 点数を入力してください。</div>
+          </div>
+
+          <div class="question" id="q2">
+            <div class="q-label">
+              <span class="q-num">②</span>
+              <span class="q-text">今回の結果について、自分ではどう感じていますか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q2" value="とても満足"><span class="opt-text">とても満足</span></label>
+              <label class="opt"><input type="radio" name="q2" value="満足"><span class="opt-text">満足</span></label>
+              <label class="opt"><input type="radio" name="q2" value="まあまあ"><span class="opt-text">まあまあ</span></label>
+              <label class="opt"><input type="radio" name="q2" value="不満"><span class="opt-text">不満</span></label>
+              <label class="opt"><input type="radio" name="q2" value="とても不満"><span class="opt-text">とても不満</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q3">
+            <div class="q-label">
+              <span class="q-num">③</span>
+              <span class="q-text">今回の結果は、自分の努力量に見合っていたと思いますか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q3" value="とてもそう思う"><span class="opt-text">とてもそう思う</span></label>
+              <label class="opt"><input type="radio" name="q3" value="そう思う"><span class="opt-text">そう思う</span></label>
+              <label class="opt"><input type="radio" name="q3" value="どちらともいえない"><span class="opt-text">どちらともいえない</span></label>
+              <label class="opt"><input type="radio" name="q3" value="あまりそう思わない"><span class="opt-text">あまりそう思わない</span></label>
+              <label class="opt"><input type="radio" name="q3" value="全くそう思わない"><span class="opt-text">全くそう思わない</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q4">
+            <div class="q-label">
+              <span class="q-num">④</span>
+              <span class="q-text">今回のテストに向けて、どのような対策をしましたか？</span>
+            </div>
+            <p class="q-hint">具体的に教えてください。</p>
+            <textarea name="q4" placeholder="例：助動詞の活用表を毎日暗記した、授業プリントを3回繰り返した…"></textarea>
+          </div>
+
+          <div class="question" id="q5">
+            <div class="q-label">
+              <span class="q-num">⑤</span>
+              <span class="q-text">テスト勉強は、いつ頃から始めましたか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q5" value="３週間以上前"><span class="opt-text">３週間以上前</span></label>
+              <label class="opt"><input type="radio" name="q5" value="２週間前"><span class="opt-text">２週間前</span></label>
+              <label class="opt"><input type="radio" name="q5" value="１週間前"><span class="opt-text">１週間前</span></label>
+              <label class="opt"><input type="radio" name="q5" value="３〜５日前"><span class="opt-text">３〜５日前</span></label>
+              <label class="opt"><input type="radio" name="q5" value="前日・当日中心"><span class="opt-text">前日・当日中心</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q6">
+            <div class="q-label">
+              <span class="q-num">⑥</span>
+              <span class="q-text">今回の勉強時間はどのくらいでしたか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q6" value="ほとんどしていない"><span class="opt-text">ほとんどしていない</span></label>
+              <label class="opt"><input type="radio" name="q6" value="１〜３時間"><span class="opt-text">１〜３時間</span></label>
+              <label class="opt"><input type="radio" name="q6" value="４〜６時間"><span class="opt-text">４〜６時間</span></label>
+              <label class="opt"><input type="radio" name="q6" value="７〜１０時間"><span class="opt-text">７〜１０時間</span></label>
+              <label class="opt"><input type="radio" name="q6" value="１０時間以上"><span class="opt-text">１０時間以上</span></label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════ セクション２ ════ -->
+      <div class="section section-2">
+        <div class="section-header">
+          <span class="section-badge">セクション 2</span>
+          <span class="section-title">学習方法について</span>
+        </div>
+        <div class="section-body">
+
+          <div class="question" id="q7">
+            <div class="q-label">
+              <span class="q-num">⑦</span>
+              <span class="q-text">効果があったと感じる勉強法を教えてください。（複数選択可）</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="checkbox" name="q7" value="音読"><span class="opt-text">音読</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="古語暗記"><span class="opt-text">古語暗記</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="助動詞暗記"><span class="opt-text">助動詞暗記</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="ノート見直し"><span class="opt-text">ノート見直し</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="授業プリント復習"><span class="opt-text">授業プリント復習</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="問題演習"><span class="opt-text">問題演習</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="ワーク反復"><span class="opt-text">ワーク反復</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="友人との確認"><span class="opt-text">友人との確認</span></label>
+              <label class="opt"><input type="checkbox" name="q7" value="AI・アプリ活用"><span class="opt-text">AI・アプリ活用</span></label>
+              <label class="opt cb-other" data-for="q7other"><input type="checkbox" name="q7" value="その他"><span class="opt-text">その他</span></label>
+            </div>
+            <div class="other-input-wrap" id="q7other">
+              <input type="text" name="q7_other" placeholder="具体的に…" maxlength="100">
+            </div>
+          </div>
+
+          <div class="question" id="q8">
+            <div class="q-label">
+              <span class="q-num">⑧</span>
+              <span class="q-text">あまり効果がなかった勉強法があれば教えてください。</span>
+            </div>
+            <textarea name="q8" placeholder="例：ただ眺めるだけの読み返しは頭に入らなかった…"></textarea>
+          </div>
+
+          <div class="question" id="q9">
+            <div class="q-label">
+              <span class="q-num">⑨</span>
+              <span class="q-text">今回、自分に不足していたと思うものを選んでください。（複数選択可）</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="checkbox" name="q9" value="古語の知識"><span class="opt-text">古語の知識</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="助動詞の知識"><span class="opt-text">助動詞の知識</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="助詞の知識"><span class="opt-text">助詞の知識</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="敬語理解"><span class="opt-text">敬語理解</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="文法理解"><span class="opt-text">文法理解</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="品詞分解"><span class="opt-text">品詞分解</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="現代語訳"><span class="opt-text">現代語訳</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="主語把握"><span class="opt-text">主語把握</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="読解力"><span class="opt-text">読解力</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="問題演習量"><span class="opt-text">問題演習量</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="学習時間"><span class="opt-text">学習時間</span></label>
+              <label class="opt"><input type="checkbox" name="q9" value="集中力"><span class="opt-text">集中力</span></label>
+              <label class="opt cb-other" data-for="q9other"><input type="checkbox" name="q9" value="その他"><span class="opt-text">その他</span></label>
+            </div>
+            <div class="other-input-wrap" id="q9other">
+              <input type="text" name="q9_other" placeholder="具体的に…" maxlength="100">
+            </div>
+          </div>
+
+          <div class="question" id="q10">
+            <div class="q-label">
+              <span class="q-num">⑩</span>
+              <span class="q-text">できなかった原因として当てはまるものを選んでください。（複数選択可）</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="checkbox" name="q10" value="暗記不足"><span class="opt-text">暗記不足</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="練習不足"><span class="opt-text">練習不足</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="時間不足"><span class="opt-text">時間不足</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="ケアレスミス"><span class="opt-text">ケアレスミス</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="問題形式への慣れ不足"><span class="opt-text">問題形式への慣れ不足</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="緊張"><span class="opt-text">緊張</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="問題の読み違い"><span class="opt-text">問題の読み違い</span></label>
+              <label class="opt"><input type="checkbox" name="q10" value="勉強開始が遅かった"><span class="opt-text">勉強開始が遅かった</span></label>
+              <label class="opt cb-other" data-for="q10other"><input type="checkbox" name="q10" value="その他"><span class="opt-text">その他</span></label>
+            </div>
+            <div class="other-input-wrap" id="q10other">
+              <input type="text" name="q10_other" placeholder="具体的に…" maxlength="100">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════ セクション３ ════ -->
+      <div class="section section-3">
+        <div class="section-header">
+          <span class="section-badge">セクション 3</span>
+          <span class="section-title">授業との関係</span>
+        </div>
+        <div class="section-body">
+
+          <div class="question" id="q11">
+            <div class="q-label">
+              <span class="q-num">⑪</span>
+              <span class="q-text">授業の中で、特に役立った活動を選んでください。（複数選択可）</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="checkbox" name="q11" value="音読"><span class="opt-text">音読</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="現代語訳"><span class="opt-text">現代語訳</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="文法解説"><span class="opt-text">文法解説</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="小テスト"><span class="opt-text">小テスト</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="板書まとめ"><span class="opt-text">板書まとめ</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="問題演習"><span class="opt-text">問題演習</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="ペア活動"><span class="opt-text">ペア活動</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="教員の解説"><span class="opt-text">教員の解説</span></label>
+              <label class="opt"><input type="checkbox" name="q11" value="ワーク"><span class="opt-text">ワーク</span></label>
+              <label class="opt cb-other" data-for="q11other"><input type="checkbox" name="q11" value="その他"><span class="opt-text">その他</span></label>
+            </div>
+            <div class="other-input-wrap" id="q11other">
+              <input type="text" name="q11_other" placeholder="具体的に…" maxlength="100">
+            </div>
+          </div>
+
+          <div class="question" id="q12">
+            <div class="q-label">
+              <span class="q-num">⑫</span>
+              <span class="q-text">授業中の取り組みは、テストにどの程度生きたと思いますか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q12" value="とても生きた"><span class="opt-text">とても生きた</span></label>
+              <label class="opt"><input type="radio" name="q12" value="生きた"><span class="opt-text">生きた</span></label>
+              <label class="opt"><input type="radio" name="q12" value="どちらともいえない"><span class="opt-text">どちらともいえない</span></label>
+              <label class="opt"><input type="radio" name="q12" value="あまり生きなかった"><span class="opt-text">あまり生きなかった</span></label>
+              <label class="opt"><input type="radio" name="q12" value="生きなかった"><span class="opt-text">生きなかった</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q13">
+            <div class="q-label">
+              <span class="q-num">⑬</span>
+              <span class="q-text">今振り返って、授業中にもっとやるべきだったと思うことを書いてください。</span>
+            </div>
+            <textarea name="q13" placeholder="例：板書をもっと丁寧に写すべきだった…"></textarea>
+          </div>
+
+          <div class="question" id="q14">
+            <div class="q-label">
+              <span class="q-num">⑭</span>
+              <span class="q-text">授業中、分からない部分をそのままにしてしまったことはありましたか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q14" value="よくあった"><span class="opt-text">よくあった</span></label>
+              <label class="opt"><input type="radio" name="q14" value="少しあった"><span class="opt-text">少しあった</span></label>
+              <label class="opt"><input type="radio" name="q14" value="あまりなかった"><span class="opt-text">あまりなかった</span></label>
+              <label class="opt"><input type="radio" name="q14" value="全くなかった"><span class="opt-text">全くなかった</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q15">
+            <div class="q-label">
+              <span class="q-num">⑮</span>
+              <span class="q-text">授業への要望や、「もっとこうしてほしい」があれば書いてください。</span>
+            </div>
+            <textarea name="q15" placeholder="授業改善のために活用します。遠慮なく書いてください。"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════ セクション４ ════ -->
+      <div class="section section-4">
+        <div class="section-header">
+          <span class="section-badge">セクション 4</span>
+          <span class="section-title">次回への改善</span>
+        </div>
+        <div class="section-body">
+
+          <div class="question" id="q16">
+            <div class="q-label">
+              <span class="q-num">⑯</span>
+              <span class="q-text">次回のテストで改善したいことを書いてください。</span>
+            </div>
+            <textarea name="q16" placeholder="例：２週間前から計画的に勉強する…"></textarea>
+          </div>
+
+          <div class="question" id="q17">
+            <div class="q-label">
+              <span class="q-num">⑰</span>
+              <span class="q-text">次回はどんな勉強をしていきたいですか？</span>
+            </div>
+            <textarea name="q17" placeholder="例：毎日10分音読する、助動詞カードを作る…"></textarea>
+          </div>
+
+          <div class="question" id="q18">
+            <div class="q-label">
+              <span class="q-num">⑱</span>
+              <span class="q-text">次回の目標点を書いてください。</span>
+            </div>
+            <input type="text" name="q18" placeholder="例：85点以上" maxlength="20">
+          </div>
+
+          <div class="question" id="q19">
+            <div class="q-label">
+              <span class="q-num">⑲</span>
+              <span class="q-text">今回の自分にアドバイスをするとしたら、何と言いますか？</span>
+            </div>
+            <textarea name="q19" placeholder="テスト前の自分へのメッセージ…"></textarea>
+          </div>
+
+          <div class="question" id="q20">
+            <div class="q-label">
+              <span class="q-num">⑳</span>
+              <span class="q-text">このテストを受ける未来の後輩にアドバイスするとしたら？</span>
+            </div>
+            <textarea name="q20" placeholder="後輩へのアドバイス…"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════ セクション５ ════ -->
+      <div class="section section-5">
+        <div class="section-header">
+          <span class="section-badge">セクション 5</span>
+          <span class="section-title">テストそのものについて</span>
+        </div>
+        <div class="section-body">
+
+          <div class="question" id="q21">
+            <div class="q-label">
+              <span class="q-num">㉑</span>
+              <span class="q-text">テストの難易度はどう感じましたか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q21" value="とても難しい"><span class="opt-text">とても難しい</span></label>
+              <label class="opt"><input type="radio" name="q21" value="難しい"><span class="opt-text">難しい</span></label>
+              <label class="opt"><input type="radio" name="q21" value="普通"><span class="opt-text">普通</span></label>
+              <label class="opt"><input type="radio" name="q21" value="易しい"><span class="opt-text">易しい</span></label>
+              <label class="opt"><input type="radio" name="q21" value="とても易しい"><span class="opt-text">とても易しい</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q22">
+            <div class="q-label">
+              <span class="q-num">㉒</span>
+              <span class="q-text">問題量は適切でしたか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q22" value="多すぎた"><span class="opt-text">多すぎた</span></label>
+              <label class="opt"><input type="radio" name="q22" value="やや多かった"><span class="opt-text">やや多かった</span></label>
+              <label class="opt"><input type="radio" name="q22" value="適切"><span class="opt-text">適切</span></label>
+              <label class="opt"><input type="radio" name="q22" value="やや少なかった"><span class="opt-text">やや少なかった</span></label>
+              <label class="opt"><input type="radio" name="q22" value="少なすぎた"><span class="opt-text">少なすぎた</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q23">
+            <div class="q-label">
+              <span class="q-num">㉓</span>
+              <span class="q-text">時間配分は適切でしたか？</span>
+            </div>
+            <div class="options-list">
+              <label class="opt"><input type="radio" name="q23" value="時間がかなり足りなかった"><span class="opt-text">時間がかなり足りなかった</span></label>
+              <label class="opt"><input type="radio" name="q23" value="少し足りなかった"><span class="opt-text">少し足りなかった</span></label>
+              <label class="opt"><input type="radio" name="q23" value="ちょうどよかった"><span class="opt-text">ちょうどよかった</span></label>
+              <label class="opt"><input type="radio" name="q23" value="余裕があった"><span class="opt-text">余裕があった</span></label>
+            </div>
+          </div>
+
+          <div class="question" id="q24">
+            <div class="q-label">
+              <span class="q-num">㉔</span>
+              <span class="q-text">その他、今回のテストについて思ったことがあれば自由に書いてください。</span>
+            </div>
+            <textarea name="q24" placeholder="自由記述…"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-area">
+        <button type="submit" class="submit-btn" id="submit-btn">アンケートを送信する</button>
+        <p class="submit-note">送信後は回答の変更ができません。</p>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Thank you -->
+  <div class="thankyou" id="thankyou">
+    <div class="ty-icon">✓</div>
+    <h2>回答ありがとうございました！</h2>
+    <p>アンケートへのご協力に感謝します。<br>今回の振り返りを次の学習に活かしてください。</p>
+  </div>
+
+</div><!-- /container -->
+
+<script type="module">
+// ── Firebase 設定 ─────────────────────────────────────────
+// Firebase Console → プロジェクト設定 → ウェブアプリ → firebaseConfig をここに貼る
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDeEWfnujqPLWZUcm4uwBYuYMFDO0xI2Ro",
+  authDomain: "kobun-research-7e4b9.firebaseapp.com",
+  projectId: "kobun-research-7e4b9",
+  storageBucket: "kobun-research-7e4b9.firebasestorage.app",
+  messagingSenderId: "397391049873",
+  appId: "1:397391049873:web:1a0cd93d3ede0e938d7b30",
+  measurementId: "G-0EZ8HE7JTG"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+// ─────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'koten_survey_v1';
+
+const form = document.getElementById('survey');
+const progFill = document.getElementById('prog-fill');
+const progText = document.getElementById('prog-text');
+const progPct = document.getElementById('prog-pct');
+const submitBtn = document.getElementById('submit-btn');
+const formWrap = document.getElementById('form-wrap');
+const thankyou = document.getElementById('thankyou');
+
+// ── 進捗計算 ──────────────────────────────────────────────
+function countAnswered() {
+  let answered = 0;
+
+  // テキスト / テキストエリア（サブ入力 _other 以外）
+  form.querySelectorAll('input[type="text"]:not([name$="_other"]), textarea').forEach(el => {
+    if (el.value.trim()) answered++;
+  });
+
+  // ラジオグループ
+  const radioGroups = new Set(
+    [...form.querySelectorAll('input[type="radio"]')].map(r => r.name)
+  );
+  radioGroups.forEach(name => {
+    if (form.querySelector(`input[name="${name}"]:checked`)) answered++;
+  });
+
+  // チェックボックスグループ
+  const cbGroups = new Set(
+    [...form.querySelectorAll('input[type="checkbox"]')].map(c => c.name)
+  );
+  cbGroups.forEach(name => {
+    if (form.querySelector(`input[name="${name}"]:checked`)) answered++;
+  });
+
+  return answered;
+}
+
+function updateProgress() {
+  const total = 24;
+  const answered = countAnswered();
+  const pct = Math.round((answered / total) * 100);
+  progFill.style.width = pct + '%';
+  progText.textContent = answered + ' / ' + total + ' 問回答済み';
+  progPct.textContent = pct + '%';
+}
+
+// ── オプション選択スタイル ─────────────────────────────────
+function refreshOptStyles() {
+  // ラジオ
+  form.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.closest('.opt').classList.toggle('checked', r.checked);
+  });
+  // チェックボックス
+  form.querySelectorAll('input[type="checkbox"]').forEach(c => {
+    c.closest('.opt').classList.toggle('checked', c.checked);
+  });
+}
+
+// ── その他テキスト表示 ────────────────────────────────────
+function setupOtherInputs() {
+  document.querySelectorAll('.cb-other').forEach(label => {
+    const targetId = label.dataset.for;
+    const wrap = document.getElementById(targetId);
+    if (!wrap) return;
+    const cb = label.querySelector('input[type="checkbox"]');
+    cb.addEventListener('change', () => {
+      wrap.classList.toggle('visible', cb.checked);
+      if (!cb.checked) {
+        const inp = wrap.querySelector('input');
+        if (inp) inp.value = '';
+      }
+    });
+  });
+}
+
+// ── localStorage 保存・復元 ───────────────────────────────
+function saveToStorage() {
+  const data = {};
+  const fd = new FormData(form);
+  fd.forEach((v, k) => {
+    if (data[k]) {
+      data[k] = Array.isArray(data[k]) ? [...data[k], v] : [data[k], v];
+    } else {
+      data[k] = v;
+    }
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function restoreFromStorage() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch(e) {}
+  if (!data) return;
+
+  Object.entries(data).forEach(([name, value]) => {
+    const inputs = form.querySelectorAll(`[name="${name}"]`);
+    if (!inputs.length) return;
+
+    const first = inputs[0];
+    if (first.type === 'text' || first.tagName === 'TEXTAREA') {
+      first.value = value;
+    } else if (first.type === 'radio') {
+      inputs.forEach(r => { r.checked = r.value === value; });
+    } else if (first.type === 'checkbox') {
+      const vals = Array.isArray(value) ? value : [value];
+      inputs.forEach(c => { c.checked = vals.includes(c.value); });
+    }
+  });
+
+  // その他表示
+  document.querySelectorAll('.cb-other').forEach(label => {
+    const targetId = label.dataset.for;
+    const wrap = document.getElementById(targetId);
+    const cb = label.querySelector('input[type="checkbox"]');
+    if (wrap && cb && cb.checked) wrap.classList.add('visible');
+  });
+
+  refreshOptStyles();
+  updateProgress();
+}
+
+// ── バリデーション ────────────────────────────────────────
+function validate() {
+  let valid = true;
+
+  // ① 点数 必須
+  const q1el = document.getElementById('q1');
+  const q1input = q1el.querySelector('input');
+  const q1err = document.getElementById('e1');
+  if (!q1input.value.trim()) {
+    q1el.classList.add('has-error');
+    q1err.classList.add('show');
+    valid = false;
+  } else {
+    q1el.classList.remove('has-error');
+    q1err.classList.remove('show');
+  }
+
+  return valid;
+}
+
+// ── 回答収集 ──────────────────────────────────────────────
+function collectData() {
+  const result = { submitted_at: new Date().toISOString() };
+  const fd = new FormData(form);
+  const multiKeys = {};
+
+  fd.forEach((v, k) => {
+    if (result[k] !== undefined) {
+      multiKeys[k] = multiKeys[k] || [result[k]];
+      multiKeys[k].push(v);
+    } else {
+      result[k] = v;
+    }
+  });
+  Object.assign(result, multiKeys);
+  return result;
+}
+
+// ── 送信 ─────────────────────────────────────────────────
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validate()) {
+    document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span>送信中…';
+
+  const data = collectData();
+
+  try {
+    await addDoc(collection(db, 'responses'), {
+      ...data,
+      submitted_at: serverTimestamp(),
+      ua: navigator.userAgent,
+    });
+  } catch (err) {
+    console.error('Firestore 送信エラー:', err);
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'アンケートを送信する';
+    alert('送信に失敗しました。もう一度お試しください。');
+    return;
+  }
+
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  formWrap.classList.add('hidden');
+  thankyou.classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── イベントバインド ──────────────────────────────────────
+function bindEvents() {
+  form.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('change', () => {
+      refreshOptStyles();
+      updateProgress();
+      saveToStorage();
+    });
+    if (el.tagName === 'TEXTAREA' || el.type === 'text') {
+      el.addEventListener('input', () => {
+        updateProgress();
+        saveToStorage();
+      });
+    }
+  });
+}
+
+// ── 初期化 ───────────────────────────────────────────────
+setupOtherInputs();
+restoreFromStorage();
+bindEvents();
+updateProgress();
+</script>
+
+</body>
+</html>
