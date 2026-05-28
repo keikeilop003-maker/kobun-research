@@ -463,6 +463,120 @@
       .submit-btn { padding: 14px 48px; font-size: 23px; }
       .section-header { padding: 16px 16px; }
     }
+
+    /* ── PDF保存ボタン ── */
+    .pdf-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: white;
+      border: none;
+      padding: 14px 48px;
+      font-size: 23px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 16px rgba(5,150,105,0.3);
+      margin-top: 16px;
+    }
+    .pdf-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(5,150,105,0.4);
+    }
+
+    /* ── 印刷カード（画面では非表示） ── */
+    #print-card { display: none; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: white !important; }
+      .header, .progress-bar-wrap, .container { display: none !important; }
+      #print-card {
+        display: block !important;
+        font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic Medium', 'Meiryo', sans-serif;
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 32px 40px;
+        color: #111;
+        font-size: 11.5pt;
+        line-height: 1.85;
+      }
+      .pc-header {
+        text-align: center;
+        padding-bottom: 14px;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #4f46e5;
+      }
+      .pc-title {
+        font-size: 20pt;
+        font-weight: 900;
+        color: #312e81;
+        letter-spacing: 0.08em;
+      }
+      .pc-subtitle {
+        font-size: 10pt;
+        color: #6b7280;
+        margin-top: 4px;
+      }
+      .pc-scores {
+        display: flex;
+        gap: 0;
+        justify-content: space-around;
+        margin: 18px 0;
+        padding: 14px 20px;
+        background: #eef2ff;
+        border-radius: 8px;
+        border: 1px solid #c7d2fe;
+      }
+      .pc-score-item { text-align: center; }
+      .pc-score-label { font-size: 9pt; color: #6b7280; display: block; }
+      .pc-score-value { font-size: 24pt; font-weight: 900; color: #4f46e5; line-height: 1.2; }
+      .pc-score-value.green { color: #059669; }
+      .pc-score-date { font-size: 11pt; font-weight: 600; color: #374151; margin-top: 4px; }
+      .pc-section { margin: 18px 0; }
+      .pc-section-title {
+        font-size: 11pt;
+        font-weight: 700;
+        color: white;
+        background: #4f46e5;
+        padding: 5px 14px;
+        border-radius: 4px;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
+      .pc-section-title.green { background: #059669; }
+      .pc-section-title.purple { background: #7c3aed; }
+      .pc-action-item {
+        margin-bottom: 12px;
+        padding-left: 12px;
+        border-left: 3px solid #7c3aed;
+      }
+      .pc-action-title { font-weight: 700; color: #312e81; font-size: 11pt; }
+      .pc-action-detail { color: #374151; font-size: 10.5pt; margin-top: 1px; }
+      .pc-text-item { margin-bottom: 12px; }
+      .pc-text-label { font-size: 9.5pt; color: #6b7280; font-weight: 600; }
+      .pc-text-value { font-size: 11pt; color: #111; white-space: pre-wrap; word-break: break-all; }
+      .pc-divider { border: none; border-top: 1px solid #e5e7eb; margin: 16px 0; }
+      .pc-signature {
+        margin-top: 36px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-top: 12px;
+        border-top: 1px solid #d1d5db;
+      }
+      .pc-sig-date { font-size: 11pt; color: #374151; }
+      .pc-sig-wrap { text-align: right; }
+      .pc-sig-line {
+        border-bottom: 1.5px solid #374151;
+        width: 220px;
+        height: 28px;
+        display: inline-block;
+      }
+      .pc-sig-label { font-size: 9pt; color: #6b7280; margin-top: 3px; }
+    }
   </style>
 </head>
 <body>
@@ -867,11 +981,16 @@
     <div class="ty-icon">✓</div>
     <h2>回答ありがとうございました！</h2>
     <p>アンケートへのご協力に感謝します。<br>今回の振り返りを次の学習に活かしてください。</p>
+    <button class="pdf-btn" id="pdf-btn">PDFで保存する</button>
   </div>
 
 </div><!-- /container -->
 
+<div id="print-card"></div>
+
 <script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 // ── Firebase 設定 ─────────────────────────────────────────
 // Firebase Console → プロジェクト設定 → ウェブアプリ → firebaseConfig をここに貼る
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -889,6 +1008,7 @@ const db  = getFirestore(app);
 // ─────────────────────────────────────────────────────────
 
 const STORAGE_KEY = 'koten_survey_v1';
+let lastData = null;
 
 const form = document.getElementById('survey');
 const progFill = document.getElementById('prog-fill');
@@ -1060,6 +1180,7 @@ form.addEventListener('submit', async (e) => {
   submitBtn.innerHTML = '<span class="spinner"></span>送信中…';
 
   const data = collectData();
+  lastData = data;
 
   try {
     await addDoc(collection(db, 'responses'), {
@@ -1080,6 +1201,124 @@ form.addEventListener('submit', async (e) => {
   thankyou.classList.add('show');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// ── PDF生成 ───────────────────────────────────────────────
+function buildActionItems(d) {
+  const items = [];
+  const q9Map = {
+    '古語の知識':   { title: '古語の知識強化',     action: '毎日5語ずつ古語帳で暗記。意味だけでなく用例とセットで覚える。' },
+    '助動詞の知識': { title: '助動詞の完全習得',   action: '活用表を毎日1回書いて確認。接続・意味・活用形を必ずセットで。' },
+    '助詞の知識':   { title: '助詞の整理',         action: '格助詞・接続助詞の働きを授業ノートで整理し直す。' },
+    '敬語理解':     { title: '敬語の識別練習',     action: '尊敬・謙譲・丁寧の3種類を区別。主語を敬語の向きから特定する練習。' },
+    '文法理解':     { title: '文法理解の強化',     action: '品詞分解を毎日1文。授業プリントを3周以上繰り返す。' },
+    '品詞分解':     { title: '品詞分解の練習',     action: '毎日1文品詞分解。動詞・形容詞・助動詞の識別から始める。' },
+    '現代語訳':     { title: '現代語訳の精度向上', action: '文単位で和訳練習。直訳→意訳の流れを意識して書く。' },
+    '主語把握':     { title: '主語把握の練習',     action: '省略された主語に注目。敬語の向きと文脈から特定する訓練。' },
+    '読解力':       { title: '読解力の向上',       action: '授業で扱った文章を再度音読し、内容理解を深める。' },
+    '問題演習量':   { title: '演習量を増やす',     action: 'ワークの未解答箇所を解く。週2回以上は演習時間を確保。' },
+    '学習時間':     { title: '学習時間の確保',     action: '古典に毎日15分以上充てる時間をスケジュールに先に入れる。' },
+    '集中力':       { title: '集中力の改善',       action: '25分集中＋5分休憩のポモドーロ法を試す。スマホは別室へ。' },
+  };
+  const q10Map = {
+    '暗記不足':           { title: '暗記不足の解消',       action: '古語・助動詞の反復回数を増やす。毎日少量ずつ積み重ねる。' },
+    '練習不足':           { title: '演習量を増やす',       action: 'ワーク・プリントの問題を繰り返し解く。解き直しも必ず行う。' },
+    '時間不足':           { title: '時間確保の計画',       action: 'テスト2週間前には計画表を作り、古典の時間を先に確保する。' },
+    'ケアレスミス':       { title: 'ケアレスミスの防止',   action: '解答後に見直し時間を必ず設ける。解答を声に出して確認する。' },
+    '問題形式への慣れ不足': { title: '問題形式に慣れる',   action: '過去問・ワークで出題形式を把握。解き方のパターンを覚える。' },
+    '緊張':               { title: '本番への準備',         action: '直前に見直せる暗記カードを作り、当日の朝に確認する習慣。' },
+    '問題の読み違い':     { title: '設問の読み取り精度',   action: '問題文を2回読む習慣をつける。キーワードに印をつける。' },
+    '勉強開始が遅かった': { title: '早期スタートの徹底',   action: '次回は最低2週間前から逆算スケジュールを立てる。' },
+  };
+
+  const q9vals = Array.isArray(d.q9) ? d.q9 : (d.q9 ? [d.q9] : []);
+  q9vals.forEach(v => { if (q9Map[v]) items.push(q9Map[v]); });
+
+  const q10vals = Array.isArray(d.q10) ? d.q10 : (d.q10 ? [d.q10] : []);
+  q10vals.forEach(v => {
+    if (q10Map[v] && !items.find(i => i.title === q10Map[v].title)) items.push(q10Map[v]);
+  });
+
+  if ((d.q5 === '前日・当日中心' || d.q5 === '３〜５日前') && !items.find(i => i.title === '早期スタートの徹底')) {
+    items.push({ title: '早期スタートの徹底', action: '次回は最低1週間前（できれば2週間前）から開始。毎日少しずつ積み上げる。' });
+  }
+  if ((d.q6 === 'ほとんどしていない' || d.q6 === '１〜３時間') && !items.find(i => i.title === '学習時間の確保')) {
+    items.push({ title: '学習時間の確保', action: '次回は合計4〜6時間を目標に、毎日少しずつ積み上げる計画を立てる。' });
+  }
+  if (items.length === 0) {
+    items.push({ title: '現在の取り組みを継続・発展', action: '今回の学習方法を維持しながら、さらなる高みを目指す。' });
+  }
+  return items.slice(0, 6);
+}
+
+function esc(s) {
+  return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '';
+}
+
+function generatePrintCard(d) {
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日`;
+  const actions = buildActionItems(d);
+
+  const actionsHtml = actions.map(a => `
+    <div class="pc-action-item">
+      <div class="pc-action-title">◆ ${esc(a.title)}</div>
+      <div class="pc-action-detail">${esc(a.action)}</div>
+    </div>`).join('');
+
+  const row = (label, val) => val
+    ? `<div class="pc-text-item"><div class="pc-text-label">${label}</div><div class="pc-text-value">${esc(val)}</div></div>`
+    : '';
+
+  return `
+    <div class="pc-header">
+      <div class="pc-title">古典　次回テストへの決意表明</div>
+      <div class="pc-subtitle">テスト振り返りアンケート　回答まとめ</div>
+    </div>
+
+    <div class="pc-scores">
+      <div class="pc-score-item">
+        <span class="pc-score-label">今回の点数</span>
+        <div class="pc-score-value">${esc(d.q1 || '―')}<span style="font-size:12pt">点</span></div>
+      </div>
+      <div class="pc-score-item">
+        <span class="pc-score-label">次回の目標</span>
+        <div class="pc-score-value green">${esc(d.q18 || '―')}</div>
+      </div>
+      <div class="pc-score-item">
+        <span class="pc-score-label">記入日</span>
+        <div class="pc-score-date">${dateStr}</div>
+      </div>
+    </div>
+
+    <div class="pc-section">
+      <div class="pc-section-title">次回テストに向けて取り組むこと</div>
+      ${actionsHtml}
+    </div>
+
+    <hr class="pc-divider">
+
+    <div class="pc-section">
+      <div class="pc-section-title green">誓い</div>
+      ${row('改善すること', d.q16)}
+      ${row('取り組む勉強法', d.q17)}
+    </div>
+
+    ${d.q19 ? `<hr class="pc-divider"><div class="pc-section"><div class="pc-section-title purple">自分へのメッセージ</div>${row('テスト前の自分へ', d.q19)}</div>` : ''}
+
+    <div class="pc-signature">
+      <div class="pc-sig-date">　　　　　年　　月　　日</div>
+      <div class="pc-sig-wrap">
+        <div class="pc-sig-line"></div>
+        <div class="pc-sig-label">氏名</div>
+      </div>
+    </div>`;
+}
+
+function savePDF() {
+  if (!lastData) return;
+  document.getElementById('print-card').innerHTML = generatePrintCard(lastData);
+  window.print();
+}
 
 // ── イベントバインド ──────────────────────────────────────
 function bindEvents() {
@@ -1103,6 +1342,7 @@ setupOtherInputs();
 restoreFromStorage();
 bindEvents();
 updateProgress();
+document.getElementById('pdf-btn').addEventListener('click', savePDF);
 </script>
 
 </body>
