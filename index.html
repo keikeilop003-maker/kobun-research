@@ -824,32 +824,17 @@
 <div id="print-card"></div>
 
 <script>
-// ── Firestore REST API 設定 ────────────────────────────────
-const FS_PROJECT = 'kobun-research-7e4b9';
-const FS_API_KEY = 'AIzaSyDeEWfnujqPLWZUcm4uwBYuYMFDO0xI2Ro';
-const FS_URL = `https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents/responses?key=${FS_API_KEY}`;
+// ── Google Apps Script 送信設定 ───────────────────────────
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyxMPnWte1DghSD0tGLjMckOdrYxmsSjLVlnsfZHwgIz-Qs4P_jaL4dPM8IcLJdBrfF/exec';
 
-async function writeToFirestore(data) {
-  const fields = {};
-  for (const [k, v] of Object.entries(data)) {
-    if (Array.isArray(v)) {
-      fields[k] = { arrayValue: { values: v.map(s => ({ stringValue: String(s) })) } };
-    } else {
-      fields[k] = { stringValue: String(v) };
-    }
-  }
-  fields['submitted_at'] = { stringValue: new Date().toISOString() };
-  fields['ua'] = { stringValue: navigator.userAgent };
-
-  const res = await fetch(FS_URL, {
+async function writeToGAS(data) {
+  const payload = { ...data, submitted_at: new Date().toISOString(), ua: navigator.userAgent };
+  await fetch(GAS_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields })
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
   });
-  if (!res.ok) {
-    const e = await res.json().catch(() => ({}));
-    throw new Error(e.error?.message || `HTTP ${res.status}`);
-  }
 }
 // ──────────────────────────────────────────────────────────
 
@@ -1031,7 +1016,7 @@ form.addEventListener('submit', async (e) => {
 
   try {
     await Promise.race([
-      writeToFirestore(data),
+      writeToGAS(data),
       new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 15000))
     ]);
   } catch (err) {
