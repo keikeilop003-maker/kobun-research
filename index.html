@@ -1019,16 +1019,22 @@ form.addEventListener('submit', async (e) => {
   lastData = data;
 
   try {
-    await addDoc(collection(db, 'responses'), {
-      ...data,
-      submitted_at: serverTimestamp(),
-      ua: navigator.userAgent,
-    });
+    await Promise.race([
+      addDoc(collection(db, 'responses'), {
+        ...data,
+        submitted_at: serverTimestamp(),
+        ua: navigator.userAgent,
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 10000))
+    ]);
   } catch (err) {
     console.error('Firestore 送信エラー:', err);
     submitBtn.disabled = false;
     submitBtn.innerHTML = 'アンケートを送信する';
-    alert('送信に失敗しました。もう一度お試しください。');
+    const msg = err.message === 'TIMEOUT'
+      ? '送信がタイムアウトしました。\nFirestoreのセキュリティルール設定を確認してください。'
+      : '送信に失敗しました。もう一度お試しください。\n(' + err.message + ')';
+    alert(msg);
     return;
   }
 
